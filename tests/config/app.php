@@ -180,7 +180,7 @@ return [
         /*
          * Custom Packages Service Providers...
          */
-		Mikewazovzky\Demopackage\DemopackageServiceProvider::class 
+		Mikewazovzky\Favoritable\FavoritableServiceProvider::class 
     ],
 
     /*
@@ -229,9 +229,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-		
-		'Demopackage' => Mikewazovzky\Demopackage\DemoFacade::class,
-
     ],
 
 ];
