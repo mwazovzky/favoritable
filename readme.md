@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mikewazovzky/favoritable.svg?branch=master)](https://travis-ci.org/mikewazovzky/favoritable)
+
 <h2 align="center">
 	<img src="https://laravel.com/assets/img/components/logo-laravel.svg">
 </h2>
