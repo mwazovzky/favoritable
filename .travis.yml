@@ -1,0 +1,27 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+
+php:
+  # using major version aliases
+  - 7.0
+
+before_script:
+  - GITHUB_NAME=mikewazovzky
+  - PACKAGE_NAME=favoritable
+  - composer self-update
+  - composer create-project laravel/laravel
+  - cd ./laravel
+  - composer config repositories.$GITHUB_NAME vcs https://github.com/$GITHUB_NAME/$PACKAGE_NAME.git
+  - composer require $GITHUB_NAME/$PACKAGE_NAME dev-master
+  - composer require satooshi/php-coveralls
+  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/.env ./
+  - rm ./config/app.php
+  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/app.php ./config
+  - cd ./vendor/$GITHUB_NAME/$PACKAGE_NAME
+  - mkdir -p build/logs    
+
+script:
+  - ../../../vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+- travis_retry php ../../../vendor/bin/coveralls

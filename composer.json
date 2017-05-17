@@ -1,0 +1,20 @@
+{
+    "name": "mikewazovzky/favoritable",
+    "description": "Demo Package",
+	"keywords": ["laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Wazovzky",
+            "email": "mike.wazovzky@gmail.com"
+        }
+    ],
+	"autoload": {
+        "psr-4": {
+            "Mikewazovzky\\Favoritable\\": "src/"
+        }
+    },
+    "require": {
+        
+    }
+}
