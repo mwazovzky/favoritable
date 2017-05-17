@@ -54,6 +54,19 @@ class FavoritableTest extends TestCase
             'name' => $this->dummy->name
         ]);
     }   
+    /** @test */
+    function guest_can_not_favorite_model() 
+    {
+        try {
+            $this->dummy->favorite();
+        } catch (\Exception $e) {
+            // Do something ... 
+        }
+        
+        $this->assertDatabaseMissing('favorites', [
+            'favorited_id' => $this->dummy->id,
+        ]);  
+    }   
 
     /** @test */
     function user_can_favorite_model() 
@@ -74,4 +87,55 @@ class FavoritableTest extends TestCase
         $this->dummy->favorite();
         $this->assertTrue($this->dummy->isFavorited());  
     }   
+
+    /** @test */
+    function model_has_isFavorited_attribute() 
+    {
+        $this->signIn();
+        $this->dummy->favorite();
+        $this->assertTrue($this->dummy->isFavorited);  
+    }      
+
+    /** @test */
+    function model_has_favoritesCount_attribute() 
+    {
+        $this->signIn();
+        $this->dummy->favorite();
+        $this->assertEquals(1, $this->dummy->favoritesCount);  
+
+        $this->signIn();
+        $this->dummy->favorite();
+        $this->assertEquals(2, $this->dummy->fresh()->favoritesCount);          
+
+        $this->dummy->unfavorite();
+        $this->assertEquals(1, $this->dummy->fresh()->favoritesCount);         
+    }   
+
+    /** @test */
+    function user_can_not_favorite_model_twice() 
+    {
+        $this->signIn();
+        $this->dummy->favorite();
+        $this->assertEquals(1, $this->dummy->favoritesCount);  
+
+        $this->dummy->favorite();
+        $this->assertEquals(1, $this->dummy->fresh()->favoritesCount);               
+    }          
+
+    /** @test */
+    function favorites_are_deleted_when_model_is_deleted() 
+    {
+        $this->signIn();
+        $id = $this->dummy->id;  
+              
+        $this->dummy->favorite();
+        $this->assertDatabaseHas('favorites', [
+            'favorited_id' => $id,
+        ]);   
+
+        $this->dummy->delete();
+        $this->assertDatabaseMissing('favorites', [
+            'favorited_id' => $id,
+        ]);              
+    }        
 }
