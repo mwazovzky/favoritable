@@ -3,8 +3,8 @@
 try {
 	$myFile = json_decode(file_get_contents('composer.json'), true);
 
-	$myFile['autoload']['psr-4']["Mikewazovzky\\Favoritable\\"] = 'packages/Mikewazovzky/Favoritable/src/';
-	$myFile['autoload']['classmap'] = [ 'packages/Mikewazovzky/Favoritable/tests/' ];
+	$myFile['autoload']['psr-4']["Mikewazovzky\\Favoritable\\"] = 'vendor/Mikewazovzky/Favoritable/src/';
+	$myFile['autoload']['classmap'] = [ 'vendor/Mikewazovzky/Favoritable/tests/' ];
 	$myFile['autoload']['files'] = [ 'tests/functions.php' ];
 
 	
