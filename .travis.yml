@@ -14,9 +14,16 @@ before_script:
   - composer config repositories.$GITHUB_NAME vcs https://github.com/$GITHUB_NAME/$PACKAGE_NAME.git
   - composer require $GITHUB_NAME/$PACKAGE_NAME dev-master
   - composer require satooshi/php-coveralls
+  - php composer_autoload.php 
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/.env ./
   - rm ./config/app.php
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/app.php ./config
+  - rm ./tests/TestCase.php
+  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/TestCase.php ./tests
+  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/functions.php ./tests 
+  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/composer_autoload.php ./
+  - php composer_autoload.php
+  - composer dump-autoload
   - cd ./vendor/$GITHUB_NAME/$PACKAGE_NAME
   - mkdir -p build/logs    
 
