@@ -22,6 +22,7 @@ before_script:
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/functions.php ./tests 
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/composer_autoload.php ./
   - php composer_autoload.php
+  - cat composer.json
   - composer dump-autoload
   - cd ./vendor/$GITHUB_NAME/$PACKAGE_NAME
   - mkdir -p build/logs    
