@@ -25,8 +25,18 @@ trait Favoritable
      */
     public function favorites()
     {
-    	return $this->morphMany(Favorite::class, 'favorited');
+    	return $this->morphMany(Favorite::class, 'favorite');
     }
+    /**
+     * Get users who favorited the model
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function favoritedBy()
+    {
+        return $this->morphToMany('App\User', 'favorite');
+    }
+
     /**
      * Favorite the model by the given user
      * 

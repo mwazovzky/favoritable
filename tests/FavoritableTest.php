@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature;
+namespace Test\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -64,7 +64,7 @@ class FavoritableTest extends TestCase
         }
         
         $this->assertDatabaseMissing('favorites', [
-            'favorited_id' => $this->dummy->id,
+            'favorite_id' => $this->dummy->id,
         ]);  
     }   
 
@@ -75,7 +75,7 @@ class FavoritableTest extends TestCase
         $this->dummy->favorite();
         $this->assertDatabaseHas('favorites', [
             'user_id' => Auth()->id(),
-            'favorited_id' => $this->dummy->id,
+            'favorite_id' => $this->dummy->id,
             // 'favorited_type' => ...
         ]);  
     }   
@@ -130,12 +130,27 @@ class FavoritableTest extends TestCase
               
         $this->dummy->favorite();
         $this->assertDatabaseHas('favorites', [
-            'favorited_id' => $id,
+            'favorite_id' => $id,
         ]);   
 
         $this->dummy->delete();
         $this->assertDatabaseMissing('favorites', [
-            'favorited_id' => $id,
+            'favorite_id' => $id,
         ]);              
-    }        
+    }  
+
+    /** @test */
+    function model_can_get_the_list_of_users_who_favorited_it() 
+    {          
+        $this->signIn();
+        $this->dummy->favorite();
+
+         $this->assertDatabaseHas('favorites', [
+            'user_id' => auth()->id(),
+        ]);       
+
+        $this->assertTrue(
+            $this->dummy->favoritedBy->contains(auth()->user())
+        );   
+    }
 }

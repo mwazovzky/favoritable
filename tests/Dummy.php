@@ -26,13 +26,4 @@ class Dummy extends Model
     {
         \Schema::dropIfExists(self::$tableName);
     }
-
-    /**
-     * Get related favorited model
- 	 * @return Illuminate\Database\Eloquent\Relations\morphTo
-     */
-    public static function favorited()
-    {
-    	return $this->morphTo();
-    }
 }
