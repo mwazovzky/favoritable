@@ -8,7 +8,7 @@
 ### Project: 
 mikewazovzky\favoritable
 ### Description
-Laravel Package allows app User to Favorite/Unfavorite model instance  
+Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance  
 #### Version: 0.0.2
 #### Change log:  
 0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations  
@@ -39,7 +39,7 @@ public function favoritedModels()
 #### Testing package. 
 Create test laravel project   
 1. copy `./env` file from `/tests/config/`  
-2. replace `/config/app.php` by `/tests/config/app.php` or add Packege Server Provider
+2. replace `/config/app.php` by `/tests/config/app.php` or add Package Server Provider
  ```
 \Mikewazovzky\Favoritable\FavoritableServiceProvider::class
 ```

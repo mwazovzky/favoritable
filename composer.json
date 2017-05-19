@@ -1,6 +1,6 @@
 {
     "name": "mikewazovzky/favoritable",
-    "description": "Demo Package",
+    "description": "Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance",
 	"keywords": ["laravel"],
     "license": "MIT",
     "authors": [
