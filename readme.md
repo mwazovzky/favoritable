@@ -11,7 +11,7 @@ mikewazovzky\favoritable
 Laravel Package allows app User to Favorite/Unfavorite model instance  
 #### Version: 0.0.2
 #### Change log:  
-0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations
+0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations  
 0.0.1 initial project scaffolding
 #### Documentation
 See PHPDoc blocks in the code
