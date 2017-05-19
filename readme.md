@@ -15,9 +15,25 @@ Laravel Package allows app User to Favorite/Unfavorite model instance
 #### Documentation
 See PHPDoc blocks in the code
 #### Installation. 
-- pull the package into Laravel project,  
+Pull the package into Laravel project,  
 ```
 composer require mikewazovzky/favoritable
+```
+Use trait Favoritable for every Model that can be favorited by a User
+```
+use Favoritable
+```
+Optionally add User::favoritedModels method for every Model that can be favorited 
+```
+/**
+ * Get all of the models that are favorited by this user.
+ * 
+ * @return Illuminate\Database\Eloquent\Relations\morphedByMany 
+ */
+public function favoritedModels()
+{
+    return $this->morphedByMany('App\Model', 'favorite');
+}  
 ```
 #### Testing package. 
 Create test laravel project   
