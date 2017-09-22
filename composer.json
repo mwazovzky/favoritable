@@ -14,7 +14,11 @@
             "Mikewazovzky\\Favoritable\\": "src/"
         }
     },
-    "require": {
-        
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mikewazovzky\\Favoritable\\FavoritableServiceProvider"
+            ]
+        }
     }
 }

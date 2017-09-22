@@ -1,19 +1,25 @@
 <?php
+
+namespace Tests;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Dummy extends Model
+class FavoritableModel extends Model
 {
     use \Mikewazovzky\Favoritable\Favoritable;
 
-    protected static $tableName = 'dummies';
+    protected static $tableName = 'favoritable_models';
     protected $guarded = [];
 
     public static function createTable()
     {
-        if (\Schema::hasTable(self::$tableName)) { 
-            return; 
+
+        if (\Schema::hasTable(self::$tableName)) {
+            return;
         }
-        
+
+        // dd(self::$tableName);
+
         \Schema::create(self::$tableName, function (\Illuminate\Database\Schema\Blueprint $table) {
             $table->increments('id');
             $table->string('name');
