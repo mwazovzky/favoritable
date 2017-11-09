@@ -23,12 +23,12 @@ See PHPDoc blocks in the code
 
 #### Installation.
 
-1. Pull the package into Laravel project
+Pull the package into Laravel project
 ```
 composer require mikewazovzky/favoritable
 ```
 
-2. Register package service provider at `app.php` for Laravel 5.4 or below.<br>
+For Laravel 5.4 or below register package service provider at `/config/app.php`.<br>
 Package will be auto-registered for Laravel 5.5 and above.
 ```
 // file config/app.php
@@ -42,18 +42,18 @@ Package will be auto-registered for Laravel 5.5 and above.
 ...
 ```
 
-3. Run database migration to create `favorites` table
+Run database migration to create `favorites` table
 ```
 $ php artisan migrate
 ```
 
-4. Use trait Favoritable for every Model that can be favorited by a User.<br>
+Use trait Favoritable for every Model that can be favorited by a User.<br>
 Check trait docblocks for a list of available methods.
 ```
 use \Mikewazovzky\Favoritable\Favoritable;
 ```
 
-5. Package makes `favorite`/`unfavorite` endpoint available for the application via
+Package makes `favorite`/`unfavorite` endpoint available for the application via
 adding corresponding routes 'web' route group
 ```
 Route::post('/favorites/{model}/{id}', 'FavoritesController@store')->name('favorites.store');
@@ -62,14 +62,14 @@ Route::delete('/favorites/{model}/{id}', 'FavoritesController@destroy')->name('f
 where `model` and `id` are short model class name (`kebab-case` for `KebabCase`) and
 id for favorited/unfavorited model.<br>
 
-6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
+View `favoritable::favorite` is available and can be used as `favorites` vidget .
 ```
 // file /resources/views/.../template.blade.php
 
 @include('favoritable::favorite')
 ```
 
-7. Run artisan command to publish `<favorite>` vue component to `/resources/assets/js/components/favoritable/Favorite.vue`
+Run artisan command to publish `<favorite>` vue component to `/resources/assets/js/components/favoritable/Favorite.vue`
 folder:
 ```
 $ php artisan vendor:publish --tag=assets
