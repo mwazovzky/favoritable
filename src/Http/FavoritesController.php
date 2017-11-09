@@ -25,7 +25,7 @@ class FavoritesController extends BaseController
     {
         $this->getModel($modelType, $modelId)->favorite(auth()->user());
 
-        if (request()->expectsJson()) {
+        if (request()->wantsJson()) {
             return response(['status' => 'Post favorited']);
         }
 
@@ -43,7 +43,7 @@ class FavoritesController extends BaseController
     {
         $this->getModel($modelType, $modelId)->unfavorite(auth()->user());
 
-        if (request()->expectsJson()) {
+        if (request()->wantsJson()) {
             return response(['status' => 'Post unfavorited']);
         }
 
