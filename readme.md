@@ -11,10 +11,10 @@ mikewazovzky\favoritable
 Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance
 #### Version: 0.0.4
 #### Change log:
-0.0.4 routes and controller to favorite/unfavorite model added
-0.0.3 package autodiscovery (as of Laravel 5.5)
-0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations
-0.0.1 initial project scaffolding
+0.0.4 routes and controller to favorite/unfavorite model added<br>
+0.0.3 package autodiscovery (as of Laravel 5.5)<br>
+0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations<br>
+0.0.1 initial project scaffolding<br>
 #### Documentation
 See PHPDoc blocks in the code
 #### Installation.
@@ -34,24 +34,28 @@ Package will be auto-registered for Laravel 5.5 and above.
 ];
 ...
 ```
-3. Use trait Favoritable for every Model that can be favorited by a User.
+3. Run database migration to create 'favorites' table
+```
+$ php artisan migrate
+```
+4. Use trait Favoritable for every Model that can be favorited by a User.
 Check trait docblocks for a list of available methods.
 ```
 use \Mikewazovzky\Favoritable\Favoritable
 ```
-4. Model favorite/unfavorite endpoint are available as related routes are added to 'web' route group
+5. Model favorite/unfavorite endpoint are available as related routes are added to 'web' route group
 ```
 Route::post('/favorites/{model}/{id}', 'FavoritesController@store')->name('favorites.store');
 Route::delete('/favorites/{model}/{id}', 'FavoritesController@destroy')->name('favorites.destroy');
 ```
 where `model` and `id` are short model class name (use `kebab-case` for `KebabCase` class name) and
 `id` for favorited/unfavorited model.
-5. View `favoritable::favorite` is available and can be used as `favorites` vidget .
+6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
 ```
 // file /resources/views/.../template.blade.php
 @include('favoritable::favorite')
 ```
-6. Vue '<favorite>' component may be published to `/resources/assets/js/components/favoritable/Favorite.vue`
+7. Vue '<favorite>' component may be published to `/resources/assets/js/components/favoritable/Favorite.vue`
 by command
 ```
 $ php artisan vendor:publish --provider=FavoritableServiceProvider --tag=assets
@@ -63,7 +67,7 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 ```
 and use it.
 
-7. Optionally add User::favoritedModels method for every Model that can be favorited
+8. Optionally add User::favoritedModels method for every Model that can be favorited
 ```
 /**
  * Get all of the models that are favorited by this user.
