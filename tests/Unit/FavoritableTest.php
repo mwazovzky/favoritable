@@ -142,6 +142,18 @@ class FavoritableTest extends TestCase
         );
     }
 
+    /** @test */
+    public function model_provides_its_favorite_attributes()
+    {
+        $user = $this->signIn();
+        $this->dummy->favorite();
+        $this->assertEquals(json_encode([
+            'favoritesCount' => $this->dummy->favoritesCount,
+            'isFavorited' => $this->dummy->isFavorited,
+            'id' => $this->dummy->id,
+        ]), $this->dummy->favoriteAttributes());
+    }
+
     protected function signIn()
     {
         $user = factory('App\User')->create();
