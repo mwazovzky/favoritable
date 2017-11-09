@@ -1,4 +1,5 @@
 <?php
+
 namespace Mikewazovzky\Favoritable\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -6,20 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     /**
-     * Table name for the model, requiired if table name is not plurified model name
+     * Auto-apply mass assignment protection.
+     *
+     * @var array
      */
-    // protected $table = 'favorites';
+    protected $fillable = ['user_id', 'favorited_id', 'favorited_type'];
+
     /**
-     * Allow mass assignment for the model
-     */
-    protected $fillable = ['user_id'];
-    /**
-     * Get related favorited model
-     * 
-	 * @return Illuminate\Database\Eloquent\Relations\morphTo
+     * Fetch the model that was favorited.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function favorited()
     {
-    	return $this->morphTo();
+        return $this->morphTo();
     }
 }

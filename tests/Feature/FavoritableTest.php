@@ -2,24 +2,22 @@
 
 namespace Tests\Feature;
 
-use Tests\FavoritableModel;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Mikewazovzky\Favoritable\Models\FavoritableModel;
 
 class FavoritableTest extends TestCase
 {
     use DatabaseMigrations;
-    protected $dummy;
 
-    public static function setUpBeforeClass()
-    {
-        echo 'Mikewazovzky\Favoritable Unit Tests ';
-    }
+    protected $dummy;
 
     protected function setUp()
     {
         parent::setUp();
+
         FavoritableModel::createTable();
+
         $this->dummy = FavoritableModel::create(['name' => 'Mary']);
     }
 
@@ -29,137 +27,61 @@ class FavoritableTest extends TestCase
     }
 
     /** @test */
-    function it_does_something()
+    public function guest_may_not_favorite_a_post()
     {
-        $this->assertTrue(true);
+        // $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
+        $this->post(route('favorites.store', ['model' => 'Some Model', 'id' => 333]))
+            ->assertRedirect('/login');
     }
 
     /** @test */
-    function it_can_see_test_page()
+    public function authenticated_user_may_favorite_model()
     {
-        $this->get('favorites/test')
-            ->assertSee('test');
-    }
-
-    /** @test */
-    function it_can_read_config_data_and_dispay_it_on_name_page()
-    {
-        $name = config('mikewazovzky-favorites.name');
-        $this->get('favorites/name')
-            ->assertSee($name);
-    }
-
-    /** @test */
-    function it_can_create_dummy_model()
-    {
-        $this->assertDatabaseHas('favoritable_models', [
-            'name' => $this->dummy->name
-        ]);
-    }
-
-    /** @test */
-    function guest_can_not_favorite_model()
-    {
-        try {
-            $this->dummy->favorite();
-        } catch (\Exception $e) {
-            // Do something ...
-        }
-
-        $this->assertDatabaseMissing('favorites', [
-            'favorite_id' => $this->dummy->id,
-        ]);
-    }
-
-    /** @test */
-    function user_can_favorite_model()
-    {
+        // Given we have an autenticated user and model
         $this->signIn();
-        $this->dummy->favorite();
+
+        // When we post to "favorites" endpoint
+        $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
+        $this->post(route('favorites.store', ['model' => $modelType, 'id' => $this->dummy->id]))
+            ->assertStatus(302);
+
+        // Then it should be recorded in data base
         $this->assertDatabaseHas('favorites', [
-            'user_id' => Auth()->id(),
-            'favorite_id' => $this->dummy->id,
-            // 'favorited_type' => ...
+            'favorited_type' => get_class($this->dummy),
+            'favorited_id' => $this->dummy->id
         ]);
+        // .. and it can fetch post favortes
+        $this->assertCount(1, $this->dummy->favorites);
     }
 
     /** @test */
-    function user_can_check_if_model_is_favorited()
+    public function guest_may_not_unfavorite_post()
     {
-        $this->signIn();
-        $this->dummy->favorite();
-        $this->assertTrue($this->dummy->isFavorited());
+        $this->delete(route('favorites.destroy', ['model' => 'someType', 'id' => 333]))
+            ->assertRedirect('/login');
     }
 
     /** @test */
-    function model_has_isFavorited_attribute()
+    public function authenticated_user_may_unfavorite_post()
     {
+        // Given we have a post favorited by the user
         $this->signIn();
-        $this->dummy->favorite();
-        $this->assertTrue($this->dummy->isFavorited);
-    }
+        $this->dummy->favorite(auth()->user());
+        $this->assertCount(1, $this->dummy->fresh()->favorites);
 
-    /** @test */
-    function model_has_favoritesCount_attribute()
-    {
-        $this->signIn();
-        $this->dummy->favorite();
-        $this->assertEquals(1, $this->dummy->favoritesCount);
+        // When we post to "unfavorite" endpoint
+        $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
+        $this->delete(route('favorites.destroy', ['model' => $modelType, 'id' => $this->dummy->id]))
+            ->assertStatus(302);
 
-        $this->signIn();
-        $this->dummy->favorite();
-        $this->assertEquals(2, $this->dummy->fresh()->favoritesCount);
-
-        $this->dummy->unfavorite();
-        $this->assertEquals(1, $this->dummy->fresh()->favoritesCount);
-    }
-
-    /** @test */
-    function user_can_not_favorite_model_twice()
-    {
-        $this->signIn();
-        $this->dummy->favorite();
-        $this->assertEquals(1, $this->dummy->favoritesCount);
-
-        $this->dummy->favorite();
-        $this->assertEquals(1, $this->dummy->fresh()->favoritesCount);
-    }
-
-    /** @test */
-    function favorites_are_deleted_when_model_is_deleted()
-    {
-        $this->signIn();
-        $id = $this->dummy->id;
-
-        $this->dummy->favorite();
-        $this->assertDatabaseHas('favorites', [
-            'favorite_id' => $id,
-        ]);
-
-        $this->dummy->delete();
-        $this->assertDatabaseMissing('favorites', [
-            'favorite_id' => $id,
-        ]);
-    }
-
-    /** @test */
-    function model_can_get_the_list_of_users_who_favorited_it()
-    {
-        $this->signIn();
-        $this->dummy->favorite();
-
-        $this->assertDatabaseHas('favorites', [
-            'user_id' => auth()->id(),
-        ]);
-
-        $this->assertTrue(
-            $this->dummy->favoritedBy->contains(auth()->user())
-        );
+        // Then it should be deleted from database
+        $this->assertCount(0, $this->dummy->favorites);
     }
 
     protected function signIn()
     {
         $user = factory('App\User')->create();
         $this->be($user);
+        return $user;
     }
 }

@@ -1,105 +1,125 @@
 <?php
+
 namespace Mikewazovzky\Favoritable;
 
 use Mikewazovzky\Favoritable\Models\Favorite;
+
 /**
  * @trait Favoritable
- * allows to favorite/unfavorite \Illuminate\Database\Eloquent\Model
+ * allows to favorite/unfavorite objects \Illuminate\Database\Eloquent\Model
  */
 trait Favoritable
 {
     /**
-     * Deleting Favorites when related model is deleted
-     * method is called from Model::boot and sets Model::deleting event handler
+     * Boot the trait.
+     * Add custom attributes that will be appended when model is
+     * casted toArray or to JSON object
+     * Delete model favorites if model is deleted
      */
-    protected static function bootFavoritable()
+    public static function bootFavoritable()
     {
+        static::created(function($model) {
+            $model->appends = array_merge($model->appends, ['favoritesCount', 'isFavorited']);
+        });
+
         static::deleting(function($model) {
             $model->favorites->each->delete();
-        }); 
-    }   
+        });
+    }
+
     /**
-     * Get model's favorites
-     * 
-     * @return Illuminate\Database\Eloquent\Relations\morphMany
+     * Get favorites for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function favorites()
     {
-    	return $this->morphMany(Favorite::class, 'favorite');
+        return $this->morphMany(Favorite::class, 'favorited');
     }
+
     /**
      * Get users who favorited the model
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\morphMany
      */
     public function favoritedBy()
     {
-        return $this->morphToMany('App\User', 'favorite');
+        return $this->morphToMany('App\User', 'favorited', 'favorites');
     }
 
     /**
-     * Favorite the model by the given user
-     * 
-     * @param User | null $user
-     * @return \App\Favorite
+     * Favorite the current model.
+     *
+     * @param User | null   $user
+     * @return Model
      */
-    public function favorite(User $user = null)
+    public function favorite($user = null)
     {
-    	$userId = $user ? $user->id : auth()->id();
+        $attributes = [ 'user_id' => $user ? $user->id : auth()->id() ];
 
-        $attributes = ['user_id' => $userId];
+        if(! $this->favorites()->where($attributes)->exists() ) {
+            return $this->favorites()->create($attributes);
+        }
 
-    	if( ! $this->favorites()->where($attributes)->exists()) {
-    		return $this->favorites()->create($attributes);
-    	}    	
+        return null;
     }
+
     /**
-     * Unfavorite the model by the given user
-     * 
-     * @param User | null $user
+     * Unfavorite the current model.
+     *
+     * @param User | null   $user
+     * @return mixed
      */
-    public function unfavorite(User $user = null)
+    public function unfavorite($user = null)
     {
-        $userId = $user ? $user->id : auth()->id();
+        $attributes = [ 'user_id' => $user ? $user->id : auth()->id() ];
 
-        $attributes = ['user_id' => $userId];
-        // 'Higher Order Collection' is used to make sure 
-        // deleting event is called for every Favorite, 
-        // as alternative to SQL call (no model event triggered)
-        $this->favorites()->where($attributes)->get()->each->delete();
+        return $this->favorites()->where($attributes)->get()->each(function($model) {
+            $model->delete();
+        });
     }
+
     /**
-     * Check if the model is favorited by a User
+     * Determine if the current model has been favorited.
      *
      * @return boolean
      */
-    public function isFavorited(User $user = null)
+    public function isFavorited($user = null)
     {
-        $userId = $user ? $user->id : auth()->id();  
-        // make SQL query
-        // return $this->favorites()->where($attributes)->exists();
+        $user = $user ?: auth()->user();
 
-        // check pre-loaded relation
-        return !! $this->favorites->where('user_id', $userId)->count();
+        if (!$user) return false;
+
+        return !! $this->favorites->where('user_id', $user->id)->count();
     }
+
     /**
-     * Get isFavorited attribute for the model
-     * usage   $model->isFavorited
-     * 
-     * @return boolean
+     * Fetch the favorited status as a property [model->isFavorited].
+     *
+     * @return bool
      */
     public function getIsFavoritedAttribute()
     {
         return $this->isFavorited();
     }
+
     /**
-     * Get favoritesCount attribute for the model
-     * usage   $model->favoritesCount
-     * 
+     * Get the number of favorites for the reply as a property [model->favoritesCount].
+     *
      * @return integer
      */
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    // TEMPORARY
+    public function favoriteAttributes()
+    {
+        return json_encode([
+            'favoritesCount' => $this->favoritesCount,
+            'isFavorited' => $this->isFavorited,
+            'id' => $this->id
+        ]);
     }
 }

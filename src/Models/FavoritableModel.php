@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Mikewazovzky\Favoritable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +9,7 @@ class FavoritableModel extends Model
     use \Mikewazovzky\Favoritable\Favoritable;
 
     protected static $tableName = 'favoritable_models';
+
     protected $guarded = [];
 
     public static function createTable()

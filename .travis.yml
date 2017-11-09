@@ -3,7 +3,7 @@ language: php
 
 php:
   # using major version aliases
-  - 7.0
+  - 7.1
 
 before_script:
   - GITHUB_NAME=mikewazovzky
@@ -17,10 +17,11 @@ before_script:
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/.env ./
   - rm ./config/app.php
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/app.php ./config
-  - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/FavoritableModel.php ./tests
+  # cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/FavoritableModel.php ./tests
   - cp ./vendor/$GITHUB_NAME/$PACKAGE_NAME/tests/config/composer_autoload.php ./
   - php composer_autoload.php
   - composer dump-autoload
+  - php artisan make:auth
   - cd ./vendor/$GITHUB_NAME/$PACKAGE_NAME
   - mkdir -p build/logs
 
