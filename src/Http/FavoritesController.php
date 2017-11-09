@@ -11,15 +11,15 @@ class FavoritesController extends BaseController
      */
     public function __construct()
     {
-        // dd(auth()->check());
-
         $this->middleware('auth');
     }
 
     /**
      * Store a new favorite in the database.
      *
-     * @param  Post $reply
+     * @param string $modelType
+     * @param integer $modelId
+     * @return Illuminate\Http\Response;
      */
     public function store($modelType, $modelId)
     {
@@ -35,7 +35,9 @@ class FavoritesController extends BaseController
     /**
      * Delete the favorite.
      *
-     * @param Post $post
+     * @param string $modelType
+     * @param integer $modelId
+     * @return Illuminate\Http\Response;
      */
     public function destroy($modelType, $modelId)
     {
@@ -57,7 +59,9 @@ class FavoritesController extends BaseController
      */
     protected function getModel($type, $id)
     {
-        $namespace = (app()->environment() === 'testing') ? '\\Mikewazovzky\\Favoritable\\Models\\' : '\\App\\';
+        $namespace = (config('app.name') === 'testing_favoritable') ?
+            '\\Mikewazovzky\\Favoritable\\Models\\' :
+            '\\App\\';
 
         $class = $namespace . studly_case($type);
 

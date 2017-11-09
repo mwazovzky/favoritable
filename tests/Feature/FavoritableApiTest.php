@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Mikewazovzky\Favoritable\Models\FavoritableModel;
 
-class FavoritableTest extends TestCase
+class FavoritableApiTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -15,6 +15,8 @@ class FavoritableTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
+
+        config(['app.name' => 'testing_favoritable']);
 
         FavoritableModel::createTable();
 
@@ -29,9 +31,8 @@ class FavoritableTest extends TestCase
     /** @test */
     public function guest_may_not_favorite_a_post()
     {
-        // $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
-        $this->post(route('favorites.store', ['model' => 'Some Model', 'id' => 333]))
-            ->assertRedirect('/login');
+        $this->postJson(route('favorites.store', ['model' => 'Some Model', 'id' => 333]))
+            ->assertStatus(401);
     }
 
     /** @test */
@@ -42,8 +43,8 @@ class FavoritableTest extends TestCase
 
         // When we post to "favorites" endpoint
         $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
-        $this->post(route('favorites.store', ['model' => $modelType, 'id' => $this->dummy->id]))
-            ->assertStatus(302);
+        $this->postJson(route('favorites.store', ['model' => $modelType, 'id' => $this->dummy->id]))
+            ->assertStatus(200);
 
         // Then it should be recorded in data base
         $this->assertDatabaseHas('favorites', [
@@ -57,8 +58,8 @@ class FavoritableTest extends TestCase
     /** @test */
     public function guest_may_not_unfavorite_post()
     {
-        $this->delete(route('favorites.destroy', ['model' => 'someType', 'id' => 333]))
-            ->assertRedirect('/login');
+        $this->deleteJson(route('favorites.destroy', ['model' => 'someType', 'id' => 333]))
+            ->assertStatus(401);
     }
 
     /** @test */
@@ -71,8 +72,8 @@ class FavoritableTest extends TestCase
 
         // When we post to "unfavorite" endpoint
         $modelType = kebab_case((new \ReflectionClass($this->dummy))->getShortName());
-        $this->delete(route('favorites.destroy', ['model' => $modelType, 'id' => $this->dummy->id]))
-            ->assertStatus(302);
+        $this->deleteJson(route('favorites.destroy', ['model' => $modelType, 'id' => $this->dummy->id]))
+            ->assertStatus(200);
 
         // Then it should be deleted from database
         $this->assertCount(0, $this->dummy->favorites);
