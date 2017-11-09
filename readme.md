@@ -9,7 +9,7 @@
 mikewazovzky\favoritable
 ### Description
 Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance
-#### Version: 0.0.2
+#### Version: 0.0.4
 #### Change log:
 0.0.4 routes and controller to favorite/unfavorite model added
 0.0.3 package autodiscovery (as of Laravel 5.5)
@@ -58,7 +58,8 @@ $ php artisan vendor:publish --provider=FavoritableServiceProvider --tag=assets
 ```
 You can register component
 ```
-
+// file /resources/assets/js/app.js
+Vue.component('favorite', require('./components/Favorite.vue'));
 ```
 and use it.
 
