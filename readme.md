@@ -5,27 +5,34 @@
 	<img src="https://laravel.com/assets/img/components/logo-laravel.svg">
 </h2>
 
-### Project:
-mikewazovzky\favoritable
+### Project: mikewazovzky\favoritable
+
 ### Description
-Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance
-#### Version: 0.0.4
+Laravel Package. Allows app User to favorite/unfavorite Eloquent Model instance.
+
+#### Version: 0.0.5
 #### Change log:
+0.0.5 frontend assets added: `<favorite>` vue component and `favorite` vidget (blade partial)<br>
 0.0.4 routes and controller to favorite/unfavorite model added<br>
-0.0.3 package autodiscovery (as of Laravel 5.5)<br>
-0.0.2 added Model::favoritedBy() and User::favoritedModels() methods that define Many To Many Polymorphic Relations<br>
+0.0.3 package auto discovery (as of Laravel 5.5)<br>
+0.0.2 added Model::favoritedBy() methods that define Many-To-Many Polymorphic Relationships<br>
 0.0.1 initial project scaffolding<br>
+
 #### Documentation
 See PHPDoc blocks in the code
+
 #### Installation.
-1. Pull the package into Laravel project,
+
+1. Pull the package into Laravel project
 ```
 composer require mikewazovzky/favoritable
 ```
-2. Register package service provider at `app.php` for Laravel 5.4 or below.
+
+2. Register package service provider at `app.php` for Laravel 5.4 or below.<br>
 Package will be auto-registered for Laravel 5.5 and above.
 ```
 // file config/app.php
+
 ...
 'providers' => [
 ...
@@ -34,50 +41,52 @@ Package will be auto-registered for Laravel 5.5 and above.
 ];
 ...
 ```
-3. Run database migration to create 'favorites' table
+
+3. Run database migration to create `favorites` table
 ```
 $ php artisan migrate
 ```
-4. Use trait Favoritable for every Model that can be favorited by a User.
+
+4. Use trait Favoritable for every Model that can be favorited by a User.<br>
 Check trait docblocks for a list of available methods.
 ```
-use \Mikewazovzky\Favoritable\Favoritable
+use \Mikewazovzky\Favoritable\Favoritable;
 ```
-5. Model favorite/unfavorite endpoint are available as related routes are added to 'web' route group
+
+5. Package makes `favorite`/`unfavorite` endpoint available for the application via
+adding corresponding routes 'web' route group
 ```
 Route::post('/favorites/{model}/{id}', 'FavoritesController@store')->name('favorites.store');
 Route::delete('/favorites/{model}/{id}', 'FavoritesController@destroy')->name('favorites.destroy');
 ```
-where `model` and `id` are short model class name (use `kebab-case` for `KebabCase` class name) and
-`id` for favorited/unfavorited model.
+where `model` and `id` are short model class name (`kebab-case` for `KebabCase`) and
+id for favorited/unfavorited model.<br>
+
 6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
 ```
 // file /resources/views/.../template.blade.php
 
 @include('favoritable::favorite')
 ```
-7. Vue '<favorite>' component may be published to `/resources/assets/js/components/favoritable/Favorite.vue`
-by command
+
+7. Run artisan command to publish `<favorite>` vue component to `/resources/assets/js/components/favoritable/Favorite.vue`
+folder:
 ```
-$ php artisan vendor:publish --provider=FavoritableServiceProvider --tag=assets
+$ php artisan vendor:publish --tag=assets
 ```
-You can register component
+and register component:
 ```
 // file /resources/assets/js/app.js
 
 Vue.component('favorite', require('./components/favoritable/Favorite.vue'));
 ```
-and use it.
-
-8. Optionally add User::favoritedModels method for every Model that can be favorited
+Component usage example:
 ```
-/**
- * Get all of the models that are favorited by this user.
- *
- * @return Illuminate\Database\Eloquent\Relations\morphedByMany
- */
-public function favoritedModels()
-{
-    return $this->morphedByMany('App\Model', 'favorite');
-}
+<favorite type="modelClass" :model={{ $model->favoriteAttributes() }}></favorite>
 ```
+where<br>
+`modelClass` is a short model class name (use `kebab-case` for `KebabCase`),
+`$model` is a model instance,<br>
+`Model::favoriteAttributes()` is a method provided by `Favoritable` trait.<br>
+Any object (e.g. model itself) that has: `id`, `isFavoreted` and `favoritesCount`
+fields may be passed as component `model` property.
