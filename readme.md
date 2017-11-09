@@ -53,6 +53,7 @@ where `model` and `id` are short model class name (use `kebab-case` for `KebabCa
 6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
 ```
 // file /resources/views/.../template.blade.php
+
 @include('favoritable::favorite')
 ```
 7. Vue '<favorite>' component may be published to `/resources/assets/js/components/favoritable/Favorite.vue`
@@ -63,7 +64,8 @@ $ php artisan vendor:publish --provider=FavoritableServiceProvider --tag=assets
 You can register component
 ```
 // file /resources/assets/js/app.js
-Vue.component('favorite', require('./components/Favorite.vue'));
+
+Vue.component('favorite', require('./components/favoritable/Favorite.vue'));
 ```
 and use it.
 
