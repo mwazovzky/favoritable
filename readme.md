@@ -18,17 +18,14 @@ Laravel Package. Allows app User to favorite/unfavorite Eloquent Model instance.
 0.0.2 added Model::favoritedBy() methods that define Many-To-Many Polymorphic Relationships<br>
 0.0.1 initial project scaffolding<br>
 
-#### Documentation
-See PHPDoc blocks in the code
-
 #### Installation.
 
-Pull the package into Laravel project
+1. Pull the package into Laravel project
 ```
 composer require mikewazovzky/favoritable
 ```
 
-For Laravel 5.4 or below register package service provider at `/config/app.php`.<br>
+2. For Laravel 5.4 or below register package service provider at `/config/app.php`.<br>
 Package will be auto-registered for Laravel 5.5 and above.
 ```
 // file config/app.php
@@ -42,35 +39,35 @@ Package will be auto-registered for Laravel 5.5 and above.
 ...
 ```
 
-Run database migration to create `favorites` table
+3. Run database migration to create `favorites` table
 ```
 $ php artisan migrate
 ```
 
-Use trait Favoritable for every Model that can be favorited by a User.<br>
+4. Use trait Favoritable for every Model that can be favorited by a User.<br>
 Check trait docblocks for a list of available methods.
 ```
 use \Mikewazovzky\Favoritable\Favoritable;
 ```
 
-Package makes `favorite`/`unfavorite` endpoint available for the application via
-adding corresponding routes 'web' route group
+5. Package makes `favorite`/`unfavorite` endpoints available for the application via
+adding corresponding routes to 'web' routes group
 ```
 Route::post('/favorites/{model}/{id}', 'FavoritesController@store')->name('favorites.store');
 Route::delete('/favorites/{model}/{id}', 'FavoritesController@destroy')->name('favorites.destroy');
 ```
 where `model` and `id` are short model class name (`kebab-case` for `KebabCase`) and
-id for favorited/unfavorited model.<br>
+id for the model being favorited/unfavorited.<br>
 
-View `favoritable::favorite` is available and can be used as `favorites` vidget .
+6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
 ```
 // file /resources/views/.../template.blade.php
 
 @include('favoritable::favorite')
 ```
 
-Run artisan command to publish `<favorite>` vue component to `/resources/assets/js/components/favoritable/Favorite.vue`
-folder:
+7. Run artisan command to publish `<favorite>` vue component
+to `/resources/assets/js/components/favoritable/Favorite.vue` folder:
 ```
 $ php artisan vendor:publish --tag=assets
 ```
@@ -80,7 +77,8 @@ and register component:
 
 Vue.component('favorite', require('./components/favoritable/Favorite.vue'));
 ```
-Component usage example:
+
+8. Component usage example:
 ```
 <favorite type="modelClass" :model={{ $model->favoriteAttributes() }}></favorite>
 ```
