@@ -12,8 +12,8 @@ class FavoritableServiceProvider extends ServiceProvider
         // load and make available to the application package routes
         $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
 
-        //  load and make available to the application package migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        // load and make available to the application package migrations
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         //  load and make available to the application package views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'favoritable');
@@ -33,7 +33,7 @@ class FavoritableServiceProvider extends ServiceProvider
 
         // --tag=assets
         $this->publishes([
-            __DIR__.'/../resources/assets' => resource_path('assets'),
+            __DIR__.'/../assets' => resource_path('assets'),
         ], 'assets');
     }
 

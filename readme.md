@@ -10,8 +10,9 @@
 ### Description
 Laravel Package. Allows app User to favorite/unfavorite Eloquent Model instance.
 
-#### Version: 0.0.5
+#### Version: 0.0.6
 #### Change log:
+0.0.6 frontend assets added: `<favorite-vidget>` vue component<br>
 0.0.5 frontend assets added: `<favorite>` vue component and `favorite` vidget (blade partial)<br>
 0.0.4 routes and controller to favorite/unfavorite model added<br>
 0.0.3 package auto discovery (as of Laravel 5.5)<br>
@@ -59,26 +60,22 @@ Route::delete('/favorites/{model}/{id}', 'FavoritesController@destroy')->name('f
 where `model` and `id` are short model class name (`kebab-case` for `KebabCase`) and
 id for the model being favorited/unfavorited.<br>
 
-6. View `favoritable::favorite` is available and can be used as `favorites` vidget .
-```
-// file /resources/views/.../template.blade.php
-
-@include('favoritable::favorite')
-```
-
-7. Run artisan command to publish `<favorite>` vue component
-to `/resources/assets/js/components/favoritable/Favorite.vue` folder:
+6. Run artisan command to publish package assets to
+ `/resources/assets/js/components/favoritable/Favorite.vue` folder:
 ```
 $ php artisan vendor:publish --tag=assets
 ```
-and register component:
+7. Published vue component are:
+`<favorite>` - favorite/unfavorite button
+`<favorite-vidget>` toggles `favorite` query string attribute.
+8. Register components:
 ```
 // file /resources/assets/js/app.js
 
 Vue.component('favorite', require('./components/favoritable/Favorite.vue'));
+Vue.component('favorite-vidget', require('./components/favoritable/FavoriteVidget.vue'));
 ```
-
-8. Component usage example:
+Component usage
 ```
 <favorite type="modelClass" :model={{ $model->favoriteAttributes() }}></favorite>
 ```
@@ -88,3 +85,7 @@ where<br>
 `Model::favoriteAttributes()` is a method provided by `Favoritable` trait.<br>
 Any object (e.g. model itself) that has: `id`, `isFavoreted` and `favoritesCount`
 fields may be passed as component `model` property.
+```
+<favorite-vidget></favorite-vidget>
+```
+Favorite vidget requires no parameters.
