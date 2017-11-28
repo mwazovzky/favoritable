@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/mwazovzky/favoritable.svg?branch=master)](https://travis-ci.org/mwazovzky/favoritable)[![[![Coverage Status](https://coveralls.io/repos/github/mwazovzky/favoritable/badge.svg?branch=master)](https://coveralls.io/github/mwazovzky/favoritable?branch=master)
+[![Build Status](https://travis-ci.org/mwazovzky/favoritable.svg?branch=master)](https://travis-ci.org/mwazovzky/favoritable)
+[![Coverage Status](https://coveralls.io/repos/github/mwazovzky/favoritable/badge.svg?branch=master)](https://coveralls.io/github/mwazovzky/favoritable?branch=master)
 
 <h2 align="center">
 	<img src="https://laravel.com/assets/img/components/logo-laravel.svg">
