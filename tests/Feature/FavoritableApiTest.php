@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Mikewazovzky\Favoritable\Models\FavoritableModel;
+use MWazovzky\Favoritable\Models\FavoritableModel;
 
 class FavoritableApiTest extends TestCase
 {
@@ -38,6 +38,8 @@ class FavoritableApiTest extends TestCase
     /** @test */
     public function authenticated_user_may_favorite_model()
     {
+        // $this->withoutExceptionHandling();
+
         // Given we have an autenticated user and model
         $this->signIn();
 

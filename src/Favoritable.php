@@ -1,8 +1,8 @@
 <?php
 
-namespace Mikewazovzky\Favoritable;
+namespace MWazovzky\Favoritable;
 
-use Mikewazovzky\Favoritable\Models\Favorite;
+use MWazovzky\Favoritable\Models\Favorite;
 
 /**
  * @trait Favoritable

@@ -1,7 +1,7 @@
 <?php
 
 Route::middleware('web')
-    ->namespace('Mikewazovzky\Favoritable\Http')
+    ->namespace('MWazovzky\Favoritable\Http')
     ->group(function () {
         Route::post('/favorites/{model}/{id}', 'FavoritesController@store')
             ->name('favorites.store');

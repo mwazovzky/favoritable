@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikewazovzky\Favoritable\Models;
+namespace MWazovzky\Favoritable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

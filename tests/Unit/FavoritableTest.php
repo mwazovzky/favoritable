@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Mikewazovzky\Favoritable\Models\FavoritableModel;
+use MWazovzky\Favoritable\Models\FavoritableModel;
 
 class FavoritableTest extends TestCase
 {

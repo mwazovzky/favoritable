@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikewazovzky\Favoritable;
+namespace MWazovzky\Favoritable;
 
 use Illuminate\Support\ServiceProvider;
 

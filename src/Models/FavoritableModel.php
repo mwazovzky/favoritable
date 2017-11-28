@@ -1,12 +1,12 @@
 <?php
 
-namespace Mikewazovzky\Favoritable\Models;
+namespace MWazovzky\Favoritable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class FavoritableModel extends Model
 {
-    use \Mikewazovzky\Favoritable\Favoritable;
+    use \MWazovzky\Favoritable\Favoritable;
 
     protected static $tableName = 'favoritable_models';
 

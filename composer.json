@@ -1,5 +1,5 @@
 {
-    "name": "mikewazovzky/favoritable",
+    "name": "mwazovzky/favoritable",
     "description": "Laravel Package allows app User to Favorite/Unfavorite Eloquent Model instance",
 	"keywords": ["laravel"],
     "license": "MIT",
@@ -11,13 +11,13 @@
     ],
 	"autoload": {
         "psr-4": {
-            "Mikewazovzky\\Favoritable\\": "src/"
+            "MWazovzky\\Favoritable\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Mikewazovzky\\Favoritable\\FavoritableServiceProvider"
+                "MWazovzky\\Favoritable\\FavoritableServiceProvider"
             ]
         }
     }

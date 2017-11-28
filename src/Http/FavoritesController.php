@@ -1,6 +1,6 @@
 <?php
 
-namespace Mikewazovzky\Favoritable\Http;
+namespace MWazovzky\Favoritable\Http;
 
 use Illuminate\Routing\Controller as BaseController;
 
@@ -60,7 +60,7 @@ class FavoritesController extends BaseController
     protected function getModel($type, $id)
     {
         $namespace = (config('app.name') === 'testing_favoritable') ?
-            '\\Mikewazovzky\\Favoritable\\Models\\' :
+            '\\MWazovzky\\Favoritable\\Models\\' :
             '\\App\\';
 
         $class = $namespace . studly_case($type);
