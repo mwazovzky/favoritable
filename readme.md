@@ -5,7 +5,7 @@
 	<img src="https://laravel.com/assets/img/components/logo-laravel.svg">
 </h2>
 
-### Project: mikewazovzky\favoritable
+### Project: mwazovzky\favoritable
 
 ### Description
 Laravel Package. Allows app User to favorite/unfavorite Eloquent Model instance.
@@ -23,7 +23,7 @@ Laravel Package. Allows app User to favorite/unfavorite Eloquent Model instance.
 
 1. Pull the package into Laravel project
 ```
-composer require mikewazovzky/favoritable
+composer require mwazovzky/favoritable
 ```
 
 2. For Laravel 5.4 or below register package service provider at `/config/app.php`.<br>
@@ -34,7 +34,7 @@ Package will be auto-registered for Laravel 5.5 and above.
 ...
 'providers' => [
 ...
-\Mikewazovzky\Favoritable\FavoritableServiceProvider::class
+\MWazovzky\Favoritable\FavoritableServiceProvider::class
 ...
 ];
 ...
@@ -48,7 +48,7 @@ $ php artisan migrate
 4. Use trait Favoritable for every Model that can be favorited by a User.<br>
 Check trait docblocks for a list of available methods.
 ```
-use \Mikewazovzky\Favoritable\Favoritable;
+use \MWazovzky\Favoritable\Favoritable;
 ```
 
 5. Package makes `favorite`/`unfavorite` endpoints available for the application via
